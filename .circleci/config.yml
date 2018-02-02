@@ -35,3 +35,9 @@ jobs:
             bundle exec rspec --format progress
       - store_test_results:
           path: /tmp/test-results
+
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: sleepy-anchorage-44594
