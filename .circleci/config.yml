@@ -1,0 +1,37 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.4.2-node-browsers
+      - image: selenium/standalone-chrome:latest
+    working_directory: ~/rails-5-1-sandbox
+    steps:
+      - checkout
+      - run:
+          name: Install System Dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y libappindicator1 fonts-liberation
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: Bundle Install
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - save_cache:
+          paths:
+            - vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      - run:
+          name: Create DB
+          command: bundle exec rake db:create db:schema:load --trace
+      - run:
+          name: Run Tests
+          command: |
+            bundle exec rspec --format progress
+      - store_test_results:
+          path: /tmp/test-results
