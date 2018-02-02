@@ -99,6 +99,7 @@ GEM
     nio4r (2.1.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
+    pg (1.0.0)
     public_suffix (3.0.0)
     puma (3.10.0)
     rack (2.0.3)
@@ -208,6 +209,7 @@ DEPENDENCIES
   coffee-rails
   jbuilder
   listen
+  pg
   puma
   rails (~> 5.1.4)
   rspec-rails (~> 3.7.0)
